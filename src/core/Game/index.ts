@@ -1,21 +1,28 @@
+import Scene from '../Scene';
+
 class Game {
-    private canvas: HTMLCanvasElement;
-	private context: CanvasRenderingContext2D;
+    private _canvas: HTMLCanvasElement;
+    private _context: CanvasRenderingContext2D;
+    private _currentScene: Scene;
     
     constructor(width: number = window.innerWidth, height: number = window.innerHeight) {
-        this.canvas = <HTMLCanvasElement>document.getElementById('game');
-        this.context = this.canvas.getContext("2d");
-		this.canvas.width = width;
-		this.canvas.height = height;
+        this._canvas = <HTMLCanvasElement>document.getElementById('game');
+        this._context = this._canvas.getContext("2d");
+		this._canvas.width = width;
+		this._canvas.height = height;
+    }
+
+    setCurrentScene = (scene: Scene): void => {
+        this._currentScene = scene;
     }
 
     update(timestamp: number): void {
-        console.log('Updating...');
+        this._currentScene.update(timestamp);
     }
 
     render() {
-        this.context.fillStyle = "gray";
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        this._currentScene.render(this._context);
     }
 }
 
