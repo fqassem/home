@@ -1,6 +1,4 @@
 export enum Type {
-    up,
-    down,
     left,
     right,
     idle
