@@ -14,6 +14,8 @@ class Animation {
     private _height: number;
     private _frames: number;
     private _type: Type;
+    private _tickCount = 0;
+    private _ticksPerFrame = 4;
 
     constructor(dx: number, dy: number, size: number, frames: number, type: Type) {
         this._dx = dx;
@@ -24,8 +26,13 @@ class Animation {
     }
 
     update = ():void => {
-        this._currentFrame++;
-        this._currentFrame %= this._frames;
+        this._tickCount += 1;
+			
+        if (this._tickCount > this._ticksPerFrame) {
+        	this._tickCount = 0;
+            this._currentFrame++;
+            this._currentFrame %= this._frames;
+        }
     }
 
     reset = (): void => {
@@ -33,8 +40,8 @@ class Animation {
     }
 
     getFramePosition = () => {
-        const framePositionX = this._dx + (this._width * this._currentFrame);
-        const framePositionY = this._dy * this._currentFrame;
+        const framePositionX = this._width * (this._dx + this._currentFrame);
+        const framePositionY = (this._dy * this._height);
 
         return { x: framePositionX, y: framePositionY };
     }
