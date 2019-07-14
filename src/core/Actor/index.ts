@@ -12,11 +12,11 @@ class Actor {
     }
 
     update = (timestamp: number):void => {
-        this._sprite.update(timestamp);
+        this._sprite.update(timestamp, this._x, this._y);
     }
 
     render = (context: CanvasRenderingContext2D):void => {
-        this._sprite.render(context);
+        this._sprite.render(context);        
     }
     
 }
