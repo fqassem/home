@@ -7,13 +7,16 @@ import BulbasaurSpriteSheet from './resources/bulbasaur.png';
 let bulbasaurAnimations = new Map();
 bulbasaurAnimations.set(Type.idle, new Animation(0, 0, 64, 1, Type.idle));
 bulbasaurAnimations.set(Type.right, new Animation(0, 2, 64, 4, Type.right));
+bulbasaurAnimations.set(Type.idleRight, new Animation(2, 2, 64, 1, Type.idleRight));
 bulbasaurAnimations.set(Type.left, new Animation(0, 1, 64, 4, Type.left));
-const bulbasaurSprite = new Sprite(BulbasaurSpriteSheet, 64, 400, 400);
+bulbasaurAnimations.set(Type.idleLeft, new Animation(2, 1, 64, 1, Type.idleLeft));
+const bulbasaurSprite = new Sprite(BulbasaurSpriteSheet, 64);
 
 class Bulbasaur extends Actor {
     private _velX: number = 0;
     private _maxSpeed = 5;
-    private _friction = .91;
+    private _friction = .85;
+    private _lastDirection: Type = null;
     private superUpdate = this.update;
 
     constructor(x: number = 0, y: number = 0) {
@@ -24,14 +27,23 @@ class Bulbasaur extends Actor {
     init = (): void => {
         window.addEventListener('keydown', (e: KeyboardEvent) => {
             if (e.keyCode === 68) {
-                this._activeAnimation = Type.right;
+                this._activeAnimation = this._lastDirection = Type.right;
             } else if (e.keyCode === 65) {
-                this._activeAnimation = Type.left;
+                this._activeAnimation = this._lastDirection = Type.left;
             }
         });
 
         window.addEventListener('keyup', (e: KeyboardEvent) => {
-            this._activeAnimation = Type.idle;
+            switch(this._lastDirection) {
+                case Type.left: 
+                    this._activeAnimation = Type.idleLeft;
+                    break;
+                case Type.right:
+                    this._activeAnimation = Type.idleRight;
+                    break;
+                default:
+                    this._activeAnimation = Type.idle;
+            }
         });
     }
 

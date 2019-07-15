@@ -8,7 +8,7 @@ class Actor {
     private _animations: Map<Type, Animation>;
     protected _activeAnimation: Type;
 
-    constructor(sprite: Sprite, x: number = 0, y: number = 0, animations: Map<Type, Animation>) {
+    constructor(sprite: Sprite, x: number = 0, y: number = 0, animations?: Map<Type, Animation>) {
         this._sprite = sprite;
         this._x = x;
         this._y = y;

@@ -1,7 +1,9 @@
 export enum Type {
     left,
     right,
-    idle
+    idle,
+    idleLeft,
+    idleRight
 }
 
 class Animation {
