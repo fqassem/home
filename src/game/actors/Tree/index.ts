@@ -10,7 +10,7 @@ class Tree extends Actor {
         const tree3 = new Sprite(TreeSpriteSheet, 0, 0, 96, 0, 54, 64);
         const trees = [tree1, tree2, tree3];
         const rando = Math.floor(Math.random() * trees.length);
-        super(trees[rando], x, y);
+        super(x, y, 64, 64, trees[rando]);
     }
 }
 

@@ -1,8 +1,9 @@
 import Scene from "../../../core/Scene";
+import Trigger from '../../../core/Actor/Trigger';
 import Bulbasaur from '../../actors/Bulbasaur';
 import Tree from '../../actors/Tree';
 
-const drawTrees = () => {
+const createTrees = () => {
     let trees = [];
     let x, y;
     for(x = 0; x < window.innerWidth; x += 64) {
@@ -14,13 +15,14 @@ const drawTrees = () => {
     return trees;
   }
 
-let trees = drawTrees();
-
-// Hero
+const trees = createTrees();
 const bulbasaur = new Bulbasaur();
+const EndTrigger = new Trigger(500, 10, 50, 50, bulbasaur, () => console.log('Triggered'), 1);
 
-//
-const actors = [...trees, bulbasaur];
-const TitleScreen = new Scene(actors);
+// Add background actors using painter's algorithm
+const backgroundActors = [...trees];
+const triggers = [EndTrigger];
+
+const TitleScreen = new Scene(bulbasaur, backgroundActors, triggers);
 
 export default TitleScreen;

@@ -1,3 +1,4 @@
+import Input, { KeyCode } from '../../../core/Input';
 import Actor from "../../../core/Actor";
 import Sprite from "../../../core/Actor/Sprite";
 import Animation, { Type } from '../../../core/Actor/Animation';
@@ -19,23 +20,24 @@ class Bulbasaur extends Actor {
     private _lastDirection: Type = null;
     private superUpdate = this.update;
 
-    constructor(x: number = 0, y: number = 0) {
-        super(bulbasaurSprite, x, y, bulbasaurAnimations);
-        this.init();
+    constructor(x: number = 0, y: number = 0, width: number = 64, height: number = 64) {
+        super(x, y, width, height, bulbasaurSprite, bulbasaurAnimations);
     }
 
-    init = (): void => {
-        window.addEventListener('keydown', (e: KeyboardEvent) => {
-            if (e.keyCode === 68) {
-                this._activeAnimation = this._lastDirection = Type.right;
-            } else if (e.keyCode === 65) {
-                this._activeAnimation = this._lastDirection = Type.left;
+    update = (timestamp: number): void => {
+        if (Input.isKeyDown(KeyCode.D)) {
+            this._activeAnimation = this._lastDirection = Type.right;
+            if (this._velX < this._maxSpeed) {
+                this._velX++;
             }
-        });
-
-        window.addEventListener('keyup', (e: KeyboardEvent) => {
-            switch(this._lastDirection) {
-                case Type.left: 
+        } else if (Input.isKeyDown(KeyCode.A)) {
+            this._activeAnimation = this._lastDirection = Type.left;
+            if (Math.abs(this._velX) < this._maxSpeed) {
+                this._velX--;
+            }
+        } else {
+            switch (this._lastDirection) {
+                case Type.left:
                     this._activeAnimation = Type.idleLeft;
                     break;
                 case Type.right:
@@ -44,19 +46,8 @@ class Bulbasaur extends Actor {
                 default:
                     this._activeAnimation = Type.idle;
             }
-        });
-    }
-
-    update = (timestamp: number): void => {
-        if (this._activeAnimation == Type.right) {
-            if (this._velX < this._maxSpeed) {
-                this._velX++;
-            }
-        } else if (this._activeAnimation == Type.left) {
-            if (Math.abs(this._velX) < this._maxSpeed) {
-                this._velX--;
-            }
         }
+        
         this._velX *= this._friction;
         this._x += this._velX;
 
